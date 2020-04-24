@@ -1,0 +1,59 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.101.0/containers/kubernetes-helm
+{
+  "name": "Kubernetes & Helm",
+  "dockerFile": "Dockerfile",
+
+  "remoteEnv": {
+    "SYNC_LOCALHOST_KUBECONFIG": "true"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${env:HOME}${env:USERPROFILE}/.kube,target=/root/.kube-localhost,type=bind",
+    "source=node_data,target=/workspace/node_modules,type=volume"
+    // Uncomment the next line to also sync certs in your .minikube folder
+    // "source=${env:HOME}${env:USERPROFILE}/.minikube,target=/root/.minikube-localhost,type=bind"
+  ],
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": true,
+    "prettier.requireConfig": true,
+    "editor.tabSize": 2
+  },
+
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "dbaeumer.vscode-eslint",
+    "xabikos.javascriptsnippets",
+    "esbenp.prettier-vscode",
+    "christian-kohler.npm-intellisense"
+  ],
+
+  "postCreateCommand": [
+    "curl -fsSL https://get.pulumi.com | sh",
+    "PATH=PATH=$PATH:/root/.pulumi/bin",
+    "npm install"
+  ]
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "kubectl version",
+
+  // Uncomment when using a ptrace-based debugger like C++, Go, and Rust.
+  // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "vscode"
+}

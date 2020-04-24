@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+    mysql:
+        image: mysql:8.0.17
+        environment:
+            MYSQL_ROOT_PASSWORD: password123
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\mysql:/var/lib/mysql'
+    netbeans:
+        image: netbeansjdk11:11.1
+        environment:
+            - DISPLAY=192.168.10.1:0.0
+        volumes:
+            - 'c:\Users\Alexa\Documents\Docker Directories\netbeans11/user:/home/netbeans'
+            - 'c:\Users\Alexa\Documents\Java projects:/root/NetBeansProjects'
+            - 'c:\Users\Alexa\Documents\Docker Directories\netbeans11/repository:/root/.m2'
+            - 'c:\Users\Alexa\Documents\Docker Directories\tomcat\webapps:/usr/local/src'
+    tomcat:
+        image: tomcat:9-jdk13-openjdk-oracle
+        volumes:
+            - 'c:\Users\Alexa\Documents\Docker Directories\tomcat\webapps\root.war:/usr/local/tomcat/webapps/root.war'
+        ports:
+            - 8080:8080
+    sonarqube:
+        image: sonarqube:7.9.1-community
+        restart: always
+        environment:
+            - sonar.jdbc.username=sonar
+            - sonar.jdbc.password=sonar
+            - sonar.jdbc.url=jdbc:postgresql://postgres:5432/sonarqube
+        ports:
+            - "9000:9000"
+            - "9092:9092"
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\sonar\conf:/opt/sonarqube/conf'
+            - 'C:\Users\Alexa\Documents\Docker Directories\sonar\data:/opt/sonarqube/data'
+            - 'C:\Users\Alexa\Documents\Docker Directories\sonar\extensions:/opt/sonarqube/extensions'
+            - 'c:\Users\Alexa\Documents\Docker Directories\sonar\bundled-plugins:/opt/sonarqube/lib/bundled-plugins' 
+    postgres:
+        image: postgres:10.1
+        restart: always
+        environment:
+            - POSTGRES_USER=sonar
+            - POSTGRES_PASSWORD=sonar
+            - POSTGRES_DB=sonarqube
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\postgres\db:/var/lib/postgresql'
+            - 'postgresql_data:/var/lib/postgresql/data'
+volumes:
+  postgresql_data:

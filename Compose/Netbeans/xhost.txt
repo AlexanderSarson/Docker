@@ -1,0 +1,4 @@
+xhost +local:root
+xhost -local:root
+
+            - '/tmp/.X11-unix:/tmp/.X11-unix'

@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  code-server:
+    container_name: code-server
+    image: codercom/code-server
+    ports:
+      - 8090:8080
+    volumes:
+      - 'C:\Users\Alexa\Documents\Docker Directories\CodeServer\projects:/home/coder/project'
+      - 'C:\Users\Alexa\Documents\Docker Directories\CodeServer\code-server:/home/coder/.local/share/code-server'
+    environment:
+      PASSWORD: Nu66ets

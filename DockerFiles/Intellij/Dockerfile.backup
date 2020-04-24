@@ -1,0 +1,12 @@
+FROM openjdk:11
+
+RUN apt-get update && \
+    apt-get install libxext6 libxtst6 libxrender1 wget tar -y && \
+    rm -rf /tmp/* && \
+    rm -rf /var/cache/apt/*
+
+RUN wget https://download-cf.jetbrains.com/idea/ideaIU-2019.2.3.tar.gz -O /tmp/ideaIU-2019.2.3.tar.gz -q && \
+    cd /home && tar xvf /tmp/ideaIU-2019.2.3.tar.gz && \
+    rm -rf /tmp/ideaIU-2019.2.3.tar.gz
+
+CMD /home/idea-IU-192.6817.14/bin/idea.sh

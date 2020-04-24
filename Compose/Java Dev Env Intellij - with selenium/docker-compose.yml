@@ -1,0 +1,82 @@
+version: '3.1'
+
+services:
+    intellij:
+        image: intellijjdk11:2019.2
+        environment:
+            - DISPLAY=192.168.10.1:0.0
+        volumes:
+            - 'intellij_data:/root/.IntelliJIdea2019.2'
+            - 'intellij_m2:/root/.m2'
+            - 'c:\Users\Alexa\Documents\Java projects:/root/Intellij'
+            - 'c:\Users\Alexa\Documents\Docker Directories\tomcat\webapps:/usr/local/src'
+            - 'c:\Users\Alexa\Documents\Docker Directories\Intellij\user:/root/.java/.userPrefs'
+    mysql:
+        image: mysql:8.0.17
+        environment:
+            MYSQL_ROOT_PASSWORD: password123
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\mysql:/var/lib/mysql'
+    tomcat:
+        image: tomcat:9-jdk13-openjdk-oracle
+        volumes:
+            - 'c:\Users\Alexa\Documents\Docker Directories\tomcat\webapps\root.war:/usr/local/tomcat/webapps/root.war'
+        ports:
+            - 8080:8080
+    selenium-hub:
+        image: selenium/hub:3.141.59-bismuth
+        container_name: selenium-hub
+        ports:
+            - "4444:4444"
+    chrome:
+        image: selenium/node-chrome-debug:3.141.59-bismuth
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+        ports:
+            - 5900:5900
+        shm_size: 2G
+    firefox:
+        image: selenium/node-firefox-debug:3.141.59-bismuth
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+        ports:
+            - 5901:5900
+        shm_size: 2G
+    sonarqube:
+        image: sonarqube:8.0-community-beta
+        restart: always
+        environment:
+            - sonar.jdbc.username=sonar
+            - sonar.jdbc.password=sonar
+            - sonar.jdbc.url=jdbc:postgresql://postgres:5432/sonarqube
+        ports:
+            - "9000:9000"
+            - "9092:9092"
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\sonar\conf:/opt/sonarqube/conf'
+            - 'C:\Users\Alexa\Documents\Docker Directories\sonar\data:/opt/sonarqube/data'
+            - 'C:\Users\Alexa\Documents\Docker Directories\sonar\extensions:/opt/sonarqube/extensions'
+            - 'c:\Users\Alexa\Documents\Docker Directories\sonar\bundled-plugins:/opt/sonarqube/lib/bundled-plugins' 
+    postgres:
+        image: postgres:10.1
+        restart: always
+        environment:
+            - POSTGRES_USER=sonar
+            - POSTGRES_PASSWORD=sonar
+            - POSTGRES_DB=sonarqube
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\postgres\db:/var/lib/postgresql'
+            - postgresql_data:/var/lib/postgresql/data
+volumes:
+  intellij_data:
+        external: true
+  intellij_m2:
+        external: true
+  postgresql_data:
+        external: true

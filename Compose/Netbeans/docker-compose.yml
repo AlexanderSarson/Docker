@@ -1,0 +1,18 @@
+version: "3.2"
+
+services:
+    netbeans:
+        image: alexandersarson/netbeans:latest
+        container_name: netbeans
+        environment:
+            - DISPLAY=$DISPLAY
+        volumes:
+            - '/home/alex/Documents:/home/Documents'
+            - 'netbeans_user:/home/netbeans'
+            - 'netbeans_m2:/root/.m2'
+        network_mode: "host"
+volumes:
+    netbeans_m2:
+        external: true
+    netbeans_user:
+        external: true

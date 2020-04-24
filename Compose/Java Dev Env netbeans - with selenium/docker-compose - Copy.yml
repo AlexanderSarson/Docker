@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+    selenium-hub:
+        image: selenium/hub:3.141.59-bismuth
+        container_name: selenium-hub
+        ports:
+            - "4444:4444"
+    chrome:
+        image: selenium/node-chrome-debug:3.141.59-bismuth
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+        ports:
+            - 5900:5900
+        shm_size: 2G
+    firefox:
+        image: selenium/node-firefox-debug:3.141.59-bismuth
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+        ports:
+            - 5901:5900
+        shm_size: 2G
+    mysql:
+        image: mysql:8.0.17
+        environment:
+            MYSQL_ROOT_PASSWORD: password123
+        volumes:
+            - 'C:\Users\Alexa\Documents\Docker Directories\mysql:/var/lib/mysql'
+    netbeans:
+        image: netbeansjdk14:11.1
+        environment:
+            - DISPLAY=192.168.10.1:0.0
+        volumes:
+            - 'c:\Users\Alexa\Documents\Docker Directories\netbeans11/user:/home/netbeans'
+            - 'c:\Users\Alexa\Documents\Java projects:/root/NetBeansProjects'
+            - 'c:\Users\Alexa\Documents\Docker Directories\netbeans11/repository:/root/.m2'
+            - 'c:\Users\Alexa\Documents\Docker Directories\tomcat\webapps:/usr/local/src'
+    tomcat:
+        image: tomcat:9-jdk13-openjdk-oracle
+        volumes:
+            - 'c:\Users\Alexa\Documents\Docker Directories\tomcat\webapps\root.war:/usr/local/tomcat/webapps/root.war'
+        ports:
+            - 8080:8080

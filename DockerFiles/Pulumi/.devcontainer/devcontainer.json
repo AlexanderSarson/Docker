@@ -1,0 +1,36 @@
+{
+  "name": "pulumi",
+  "dockerFile": "Dockerfile",
+  "forwardPorts": [1234, 1235],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "mounts": ["source=node_data,target=/workspace/node_modules,type=volume",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock",
+    "source=${env:HOME}${env:USERPROFILE}/.kube,target=/root/.kube-localhost,type=bind"
+          ],
+  "remoteEnv": {
+    "SYNC_LOCALHOST_KUBECONFIG": "true"
+  },
+  "containerEnv": {
+    "CHOKIDAR_USEPOLLING": "true"
+  },
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "xabikos.javascriptsnippets",
+    "esbenp.prettier-vscode",
+    "christian-kohler.npm-intellisense"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": true,
+    "prettier.requireConfig": true,
+    "editor.tabSize": 2
+  },
+  "postCreateCommand": "npm install"
+}

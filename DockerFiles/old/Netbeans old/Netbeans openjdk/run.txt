@@ -1,0 +1,7 @@
+docker run -ti --rm \
+    -e DISPLAY=$DISPLAY \
+    -v $HOME/dotfiles/.netbeans-docker:/root/.netbeans \
+    -v $(pwd):/workspace \
+    --volumes-from maven_data \
+    --name netbeans \
+    dirichlet/netbeans

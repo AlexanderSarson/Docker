@@ -1,0 +1,24 @@
+version: "3.2"
+
+services:
+    intellij:
+        image: intellij:2019.3-jdk-11-tomcat-9.0.29
+        environment:
+            - DISPLAY=host.docker.internal:0.0
+        volumes:
+            - 'intellij_data:/root/.IntelliJIdea2019.3'
+            - 'intellij_m2:/root/.m2'
+            - 'c:\Data\Directories\Intellij\user:/root/.java/.userPrefs'
+            - '/run/desktop/mnt/host/wsl/docker-desktop-bind-mounts/Ubuntu-18.04/7c4bcf47ddb774a285d87b3dc1b18ccbf6f3765f879be6d768b10e9411f702ec:/home/projects'
+        ports:
+            - 8081:8080
+        networks:
+            - development
+volumes:
+    intellij_data:
+        external: true
+    intellij_m2:
+        external: true
+networks:
+    development:
+        external: true

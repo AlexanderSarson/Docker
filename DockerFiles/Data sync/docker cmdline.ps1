@@ -1,0 +1,1 @@
+﻿docker run --rm -v sync_data:/volume -v 'C:\Users\Alexa\Documents\ssh:/host' sync_data:1.0
